@@ -4,28 +4,28 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import ro.vavedem.exceptions.VaVedemApiException;
 import ro.vavedem.exceptions.VaVedemNotFoundException;
+import ro.vavedem.exceptions.VaVedemNotSuportedException;
 import ro.vavedem.exceptions.VaVedemPersistenceException;
 import ro.vavedem.interfaces.database.Service;
 import ro.vavedem.models.PrimarieModel;
 import ro.vavedem.persistence.entities.Primarie;
-import ro.vavedem.persistence.service.PrimarieService;
+import ro.vavedem.persistence.repository.PrimarieRepository;
 import ro.vavedem.services.util.PrimarieServUtil;
 
-import javax.transaction.NotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 
 @org.springframework.stereotype.Service
-public class PrimarieConversionService implements Service<PrimarieModel> {
+public class PrimarieService implements Service<PrimarieModel> {
 
-    private static final Logger logger = Logger.getLogger(PrimarieConversionService.class);
+    private static final Logger logger = Logger.getLogger(PrimarieService.class);
 
     @Autowired
-    private PrimarieService primarieService;
+    private PrimarieRepository repository;
 
     @Override
     public PrimarieModel findOne(Long id) throws VaVedemApiException {
-        final Primarie entity = primarieService.findOne(id);
+        final Primarie entity = repository.findOne(id);
 
         if (null == entity) {
             throw new VaVedemNotFoundException("Not found any record with id: " + id);
@@ -37,7 +37,7 @@ public class PrimarieConversionService implements Service<PrimarieModel> {
     @Override
     public List<PrimarieModel> findAll() throws VaVedemApiException {
         final List<PrimarieModel> models = new ArrayList<>();
-        final List<Primarie> entities = primarieService.findAll();
+        final List<Primarie> entities = repository.findAll();
 
         for (Primarie e : entities) {
             models.add(PrimarieServUtil.convertToModel(e));
@@ -50,7 +50,7 @@ public class PrimarieConversionService implements Service<PrimarieModel> {
     @Override
     public PrimarieModel save(final PrimarieModel model) throws VaVedemApiException {
         final Primarie p = PrimarieServUtil.convertToEntity(model);
-        final Primarie saved = primarieService.save(p);
+        final Primarie saved = repository.save(p);
 
         if (null == saved) {
             throw new VaVedemPersistenceException("Fail to save the entity.");
@@ -63,13 +63,13 @@ public class PrimarieConversionService implements Service<PrimarieModel> {
     }
 
     @Override
-    public void delete(PrimarieModel model) throws NotSupportedException {
-        throw new NotSupportedException("not implemented");
+    public void delete(PrimarieModel model) throws VaVedemNotSuportedException {
+        throw new VaVedemNotSuportedException("not implemented");
     }
 
     @Override
-    public List<PrimarieModel> findByNume(String nume) throws NotSupportedException {
-        throw new NotSupportedException("not implemented");
+    public List<PrimarieModel> findByNume(String nume) throws VaVedemNotSuportedException {
+        throw new VaVedemNotSuportedException("not implemented");
     }
 }
 

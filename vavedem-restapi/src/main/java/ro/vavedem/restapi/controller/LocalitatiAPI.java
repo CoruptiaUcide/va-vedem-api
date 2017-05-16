@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import ro.vavedem.exceptions.VaVedemApiException;
 import ro.vavedem.exceptions.VaVedemConversionException;
 import ro.vavedem.exceptions.VaVedemNotFoundException;
+import ro.vavedem.interfaces.database.Service;
 import ro.vavedem.models.LocalitateModel;
-import ro.vavedem.services.LocalitateConversionService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class LocalitatiAPI {
     private static final Logger logger = Logger.getLogger(LocalitatiAPI.class);
 
     @Autowired
-    private LocalitateConversionService localitateConversionService;
+    private Service<LocalitateModel> localitateService;
 
     @ApiOperation(value = "Intoarce lista cu toate localitatiile.", tags = {"localitate"})
     @RequestMapping(value = {"/localitati"}, method = {RequestMethod.GET})
@@ -46,7 +46,7 @@ public class LocalitatiAPI {
         List<LocalitateModel> localitatiModel = new ArrayList<>();
 
         try {
-            localitatiModel = localitateConversionService.findAll();
+            localitatiModel = localitateService.findAll();
         } catch (VaVedemApiException e) {
             if (e instanceof VaVedemConversionException) {
                 logger.info(e.getMessage());
@@ -77,7 +77,7 @@ public class LocalitatiAPI {
         LocalitateModel saved = null;
 
         try {
-            saved = localitateConversionService.save(model);
+            saved = localitateService.save(model);
         } catch (VaVedemApiException e) {
             if (e instanceof VaVedemConversionException) {
                 logger.info(e.getMessage());
@@ -90,7 +90,8 @@ public class LocalitatiAPI {
             }
         }
 
-        return new ResponseEntity<>(saved, HttpStatus.OK);
+        return new ResponseEntity<LocalitateModel>(saved, HttpStatus.CREATED);
+
     }
 
     @ApiOperation(value = "Intoarce detaliile localitatii cu id-ul dat.", tags = {"localitate"})
@@ -104,7 +105,7 @@ public class LocalitatiAPI {
         LocalitateModel model = null;
 
         try {
-            model = localitateConversionService.findOne(id);
+            model = localitateService.findOne(id);
         } catch (VaVedemApiException e) {
             if (e instanceof VaVedemNotFoundException) {
                 logger.info(e.getMessage());

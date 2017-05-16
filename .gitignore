@@ -9,3 +9,4 @@
 *.iml
 */**/*.iml
 *.idea
+sendgrid.env

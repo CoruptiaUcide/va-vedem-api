@@ -14,12 +14,8 @@ import ro.vavedem.exceptions.VaVedemConversionException;
 import ro.vavedem.exceptions.VaVedemNotFoundException;
 import ro.vavedem.interfaces.database.Service;
 import ro.vavedem.models.PrimarieModel;
-import ro.vavedem.persistence.repository.RoleRepository;
-import ro.vavedem.persistence.repository.UserRepository;
-import ro.vavedem.persistence.service.AdresaService;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 import static ro.vavedem.restapi.constants.ApiMessageConstants.ASIGURATIVA_CA_DATELE_INTRODUSE_SUNT_CORECTE;
@@ -33,14 +29,6 @@ public class PrimariiAPI {
 
     private static final Logger logger = Logger.getLogger(PrimariiAPI.class);
 
-    @Autowired
-    private AdresaService adresaService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Autowired
     private Service<PrimarieModel> primarieService;
@@ -49,7 +37,7 @@ public class PrimariiAPI {
     @ApiOperation(value = "Intoarce lista cu toate primariile.", tags = {"primarie"})
     @RequestMapping(value = {"/primarii"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseEntity<List<PrimarieModel>> getPrimarii(Principal principal) {
+    public ResponseEntity<List<PrimarieModel>> getPrimarii() {
         logger.info("get lista primarii");
 
         List<PrimarieModel> primaries = null;
@@ -95,7 +83,7 @@ public class PrimariiAPI {
             }
         }
 
-        return new ResponseEntity<PrimarieModel>(saved, HttpStatus.OK);
+        return new ResponseEntity<PrimarieModel>(saved, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Intoarce detaliile primarii cu id-ul dat.", tags = {"primarie"})

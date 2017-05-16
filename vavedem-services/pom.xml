@@ -44,9 +44,15 @@
           <artifactId>interfaces</artifactId>
       </dependency>
       
-        <dependency>
+      <dependency>
           <groupId>ro.vavedem</groupId>
           <artifactId>persistence</artifactId>
+      </dependency>
+
+      <dependency>
+          <groupId>com.sendgrid</groupId>
+          <artifactId>sendgrid-java</artifactId>
+          <version>3.1.0</version>
       </dependency>
     
   </dependencies>

@@ -1,10 +1,11 @@
-package ro.vavedem.persistence.service;
+package ro.vavedem.persistence.repository;
 
+import org.springframework.data.repository.CrudRepository;
 import ro.vavedem.persistence.entities.Primarie;
 
 import java.util.List;
 
-public interface PrimarieService {
+public interface PrimarieRepository extends CrudRepository<Primarie, Long> {
 
     Primarie findOne(Long id);
 
@@ -15,4 +16,5 @@ public interface PrimarieService {
     void delete(Primarie primarie);
 
     List<Primarie> findByNume(String nume);
+
 }

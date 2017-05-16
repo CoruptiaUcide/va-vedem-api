@@ -1,8 +1,9 @@
 package ro.vavedem.interfaces.database;
 
 import ro.vavedem.exceptions.VaVedemApiException;
+import ro.vavedem.exceptions.VaVedemNotSuportedException;
 
-import javax.transaction.NotSupportedException;
+
 import java.util.List;
 
 public interface Service<T> {
@@ -13,7 +14,7 @@ public interface Service<T> {
 
     T save(T model) throws VaVedemApiException;
 
-    void delete(T model) throws NotSupportedException;
+    void delete(T model) throws VaVedemNotSuportedException;
 
-    List<T> findByNume(String nume) throws NotSupportedException;
+    List<T> findByNume(String nume) throws VaVedemNotSuportedException;
 }
